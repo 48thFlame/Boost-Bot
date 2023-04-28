@@ -8,7 +8,7 @@ EMBED_FOOTER_TEXT = "https://discord.gg/ZR2EspdHFQ ● Icons by: icons8.com"
 
 def init_embed() -> hikari.Embed:
     embed = hikari.Embed(color=EMBED_COLOR)
-    embed.set_footer(text=EMBED_FOOTER_TEXT, icon='./discord/assets/boost.png')
+    embed.set_footer(text=EMBED_FOOTER_TEXT, icon='./assets/boost.png')
 
     return embed
 
@@ -22,7 +22,7 @@ def load_help_command(bot: lightbulb.BotApp):
         _commands.sort()
 
         embed = init_embed()
-        embed.set_author(name='Help', icon='./discord/assets/help.png')
+        embed.set_author(name='Help', icon='./assets/help.png')
         lines: list[str] = [
             '```adoc',
             '=== Commands ===',

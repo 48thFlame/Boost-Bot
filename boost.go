@@ -8,8 +8,8 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/48thFlame/Boost-bot/commands"
 	"github.com/48thFlame/Boost-bot/discord"
-	"github.com/48thFlame/Boost-bot/discord/commands"
 )
 
 var pyInterpreterName, pyFilePath string
@@ -25,7 +25,7 @@ func run() (err error) {
 	rand.Seed(time.Now().UnixNano())
 	log.Default().SetOutput(os.Stdout)
 
-	config, err := discord.LoadConfig()
+	config, err := loadConfig()
 	if err != nil {
 		return fmt.Errorf("error loading config: %v", err)
 	}
@@ -35,7 +35,7 @@ func run() (err error) {
 
 	var bot *discord.Bot
 
-	bot, err = discord.NewBot("./discord/TOKEN.txt", pyInterpreterName, pyFilePath)
+	bot, err = discord.NewBot("./TOKEN.txt", pyInterpreterName, pyFilePath)
 	if err != nil {
 		return fmt.Errorf("error creating bot: %v", err)
 	}
@@ -45,7 +45,8 @@ func run() (err error) {
 		bot.AddCommandHandler(name, handler)
 	}
 
-	err = bot.S.Open()
+	// err = bot.S.Open()
+	err = bot.Start()
 	if err != nil {
 		return fmt.Errorf("error opening bot session: %v", err)
 	}

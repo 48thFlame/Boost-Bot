@@ -76,16 +76,15 @@ def load_calculator(bot: lightbulb.BotApp):
         def build_calculator_buttons(self) -> list:
             buttons = []
             for row in C_BUTTONS:
-                action_row = bot.rest.build_action_row()
+                action_row = bot.rest.build_message_action_row()
+
                 for button_face, style in row:
-                    (
-                        action_row.add_button(
-                            style,
-                            f'{C_START_OF_BUTTON_CUSTOM_ID}{button_face}'
-                        )
-                        .set_label(button_face)
-                        .add_to_container()
+                    action_row.add_interactive_button(
+                        style,
+                        f'{C_START_OF_BUTTON_CUSTOM_ID}{button_face}',
+                        label=button_face
                     )
+
                 buttons.append(action_row)
 
             return buttons

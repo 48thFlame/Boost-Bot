@@ -6,7 +6,7 @@ from commands.dm_control import load_dm_control
 import hikari
 import lightbulb
 
-with open("./discord/TOKEN.txt", "r") as f:
+with open("./TOKEN.txt", "r") as f:
     TOKEN = f.readline().strip()
 
 bot = lightbulb.BotApp(

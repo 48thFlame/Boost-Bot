@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/48thFlame/Boost-bot/data"
 	"github.com/48thFlame/Boost-bot/discord"
-	"github.com/48thFlame/Boost-bot/discord/data"
 	dg "github.com/bwmarrin/discordgo"
 )
 
@@ -54,7 +54,7 @@ func Ball8(s *dg.Session, i *dg.InteractionCreate) {
 		AddField("Question", question, false).
 		AddField("Answer", answer, false).MessageEmbed
 
-	r, err := os.Open("./discord/assets/boost.png")
+	r, err := os.Open("./assets/boost.png")
 	if err != nil {
 		discord.Error(fmt.Errorf("error opening boost.png: %v", err), s, i.Interaction)
 		return
@@ -87,13 +87,13 @@ func Dice(s *dg.Session, i *dg.InteractionCreate) {
 		SetAuthor("attachment://dice.png", "Dice", "").
 		AddField(fmt.Sprintf("You rolled %v dice, each with %v sides", dice, sides), strings.Join(rolledDice, ", "), false).MessageEmbed
 
-	diceR, err := os.Open("./discord/assets/dice.png")
+	diceR, err := os.Open("./assets/dice.png")
 	if err != nil {
 		discord.Error(fmt.Errorf("error opening dice.png: %v", err), s, i.Interaction)
 		return
 	}
 
-	boostR, err := os.Open("./discord/assets/boost.png")
+	boostR, err := os.Open("./assets/boost.png")
 	if err != nil {
 		discord.Error(fmt.Errorf("error opening boost.png: %v", err), s, i.Interaction)
 		return
@@ -125,13 +125,13 @@ func Coinflip(s *dg.Session, i *dg.InteractionCreate) {
 		SetAuthor("attachment://coinflip.png", "Coinflip", "").
 		AddField("Flipping a coin", fmt.Sprintf("It's %v!", res), false).MessageEmbed
 
-	cfr, err := os.Open("./discord/assets/coinflip.png")
+	cfr, err := os.Open("./assets/coinflip.png")
 	if err != nil {
 		discord.Error(fmt.Errorf("error opening coinflip.png: %v", err), s, i.Interaction)
 		return
 	}
 
-	boostR, err := os.Open("./discord/assets/boost.png")
+	boostR, err := os.Open("./assets/boost.png")
 	if err != nil {
 		discord.Error(fmt.Errorf("error opening boost.png: %v", err), s, i.Interaction)
 		return
@@ -164,13 +164,13 @@ func Info(s *dg.Session, i *dg.InteractionCreate) {
 		AddField("Boost Discord server:", boostDiscordServer, false).
 		AddField("Icons by:", "https://icons8.com", false).MessageEmbed
 
-	infoR, err := os.Open("./discord/assets/info.png")
+	infoR, err := os.Open("./assets/info.png")
 	if err != nil {
 		discord.Error(fmt.Errorf("error opening info.png: %v", err), s, i.Interaction)
 		return
 	}
 
-	boostR, err := os.Open("./discord/assets/boost.png")
+	boostR, err := os.Open("./assets/boost.png")
 	if err != nil {
 		discord.Error(fmt.Errorf("error opening boost.png: %v", err), s, i.Interaction)
 		return
@@ -206,13 +206,13 @@ func Poll(s *dg.Session, i *dg.InteractionCreate) {
 		SetAuthor("attachment://poll.png", "Poll", "").
 		AddField(fmt.Sprintf("%v's poll:", discord.GetInteractionUser(i.Interaction)), poll, false).MessageEmbed
 
-	pollR, err := os.Open("./discord/assets/poll.png")
+	pollR, err := os.Open("./assets/poll.png")
 	if err != nil {
 		discord.Error(fmt.Errorf("error opening poll.png: %v", err), s, i.Interaction)
 		return
 	}
 
-	boostR, err := os.Open("./discord/assets/boost.png")
+	boostR, err := os.Open("./assets/boost.png")
 	if err != nil {
 		discord.Error(fmt.Errorf("error opening boost.png: %v", err), s, i.Interaction)
 		return
@@ -337,13 +337,13 @@ func Statistics(s *dg.Session, i *dg.InteractionCreate) {
 		SetAuthor("attachment://stats.png", "Statistics", "").
 		AddField("Mastermind:", mastermindStatsStr, false).MessageEmbed
 
-	statsR, err := os.Open("./discord/assets/stats.png")
+	statsR, err := os.Open("./assets/stats.png")
 	if err != nil {
 		discord.Error(fmt.Errorf("error opening stats.png: %v", err), s, i.Interaction)
 		return
 	}
 
-	boostR, err := os.Open("./discord/assets/boost.png")
+	boostR, err := os.Open("./assets/boost.png")
 	if err != nil {
 		discord.Error(fmt.Errorf("error opening boost.png: %v", err), s, i.Interaction)
 	}

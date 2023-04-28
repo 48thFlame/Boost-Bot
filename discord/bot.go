@@ -44,13 +44,6 @@ func NewBot(tokenFilePath, pyInterpreter, pyCommandsFile string) (*Bot, error) {
 	bot.pyInterpreter = pyInterpreter
 	bot.pyCommandsFile = pyCommandsFile
 
-	go func() {
-		err := bot.runPyScript()
-		if err != nil {
-			log.Fatalf("Error while running python script: %v\n", err)
-		}
-	}()
-
 	return bot, nil
 }
 
@@ -60,8 +53,19 @@ type Bot struct {
 	pyInterpreter, pyCommandsFile string
 }
 
+func (b *Bot) Start() error {
+	go func() {
+		err := b.runPyScript()
+		if err != nil {
+			log.Fatalf("Error while running python script: %v\n", err)
+		}
+	}()
+
+	return b.S.Open()
+}
+
 func (b *Bot) runPyScript() (err error) {
-	cmd := exec.Command(b.pyInterpreter, b.pyCommandsFile)
+	cmd := exec.Command(b.pyInterpreter, "-OO", b.pyCommandsFile)
 	cmd.Stdout = log.Default().Writer()
 
 	err = cmd.Run()

@@ -1,4 +1,4 @@
-package discord
+package main
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ type configType map[string]interface{}
 
 var config = make(configType)
 
-func LoadConfig() (configType, error) {
+func loadConfig() (configType, error) {
 	f, err := os.Open("config.json")
 	if err != nil {
 		return nil, fmt.Errorf("error opening config.json: %v", err)

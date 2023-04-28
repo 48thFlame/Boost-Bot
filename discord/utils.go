@@ -26,8 +26,8 @@ func InteractionRespond(s *dg.Session, i *dg.Interaction, t dg.InteractionRespon
 	)
 }
 
-func InteractionEdit(s *dg.Session, i *dg.Interaction, newresp *dg.WebhookEdit) error {
-	_, err := s.InteractionResponseEdit(i, newresp)
+func InteractionEdit(s *dg.Session, i *dg.Interaction, newResp *dg.WebhookEdit) error {
+	_, err := s.InteractionResponseEdit(i, newResp)
 	return err
 }
 

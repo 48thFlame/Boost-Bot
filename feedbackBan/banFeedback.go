@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/48thFlame/Boost-bot/discord/data"
+	"github.com/48thFlame/Boost-bot/data"
 )
 
 func main() {
