@@ -10,7 +10,7 @@ import (
 
 type SlashCommandHandlerType func(s *dg.Session, i *dg.InteractionCreate)
 
-func NewBot(tokenFilePath, pyInterpreter, pyCommandsFile string) (*Bot, error) {
+func NewBot(tokenFilePath, pyInterpreter, pyCommandsFile string, commands map[string]SlashCommandHandlerType) (*Bot, error) {
 	bot := &Bot{}
 
 	token, err := os.ReadFile(tokenFilePath)
@@ -22,8 +22,6 @@ func NewBot(tokenFilePath, pyInterpreter, pyCommandsFile string) (*Bot, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	cmdsHandlers := make(map[string]SlashCommandHandlerType)
 
 	s.AddHandler(func(s *dg.Session, i *dg.InteractionCreate) {
 		if i.Type == dg.InteractionApplicationCommand {
@@ -38,9 +36,13 @@ func NewBot(tokenFilePath, pyInterpreter, pyCommandsFile string) (*Bot, error) {
 	s.AddHandler(func(s *dg.Session, r *dg.Ready) {
 		log.Printf("%v is now online!\n", bot.S.State.User)
 	})
+	bot.cmdsHandlers = make(map[string]SlashCommandHandlerType)
+
+	for name, handler := range commands {
+		bot.addCommandHandler(name, handler)
+	}
 
 	bot.S = s
-	bot.cmdsHandlers = cmdsHandlers
 	bot.pyInterpreter = pyInterpreter
 	bot.pyCommandsFile = pyCommandsFile
 
@@ -73,6 +75,6 @@ func (b *Bot) runPyScript() (err error) {
 	return
 }
 
-func (b *Bot) AddCommandHandler(name string, handler SlashCommandHandlerType) {
+func (b *Bot) addCommandHandler(name string, handler SlashCommandHandlerType) {
 	b.cmdsHandlers[name] = handler
 }

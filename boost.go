@@ -12,7 +12,10 @@ import (
 	"github.com/48thFlame/Boost-bot/discord"
 )
 
-var pyInterpreterName, pyFilePath string
+func init() {
+	rand.Seed(time.Now().UnixNano())
+	log.Default().SetOutput(os.Stdout)
+}
 
 func main() {
 	err := run()
@@ -22,33 +25,19 @@ func main() {
 }
 
 func run() (err error) {
-	rand.Seed(time.Now().UnixNano())
-	log.Default().SetOutput(os.Stdout)
-
 	config, err := loadConfig()
 	if err != nil {
 		return fmt.Errorf("error loading config: %v", err)
 	}
 
-	pyInterpreterName = config["pyInterpreterName"].(string)
-	pyFilePath = config["pyFilePath"].(string)
-
-	var bot *discord.Bot
-
-	bot, err = discord.NewBot("./TOKEN.txt", pyInterpreterName, pyFilePath)
+	bot, err := discord.NewBot("./TOKEN.txt", config.PyInterpreterName, config.PyFilePath, commands.ExportCommands())
 	if err != nil {
 		return fmt.Errorf("error creating bot: %v", err)
 	}
 
-	commands := commands.ExportCommands()
-	for name, handler := range commands {
-		bot.AddCommandHandler(name, handler)
-	}
-
-	// err = bot.S.Open()
 	err = bot.Start()
 	if err != nil {
-		return fmt.Errorf("error opening bot session: %v", err)
+		return fmt.Errorf("error starting bot: %v", err)
 	}
 	defer bot.S.Close()
 
