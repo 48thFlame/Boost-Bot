@@ -22,8 +22,8 @@ func ExportCommands() exportedCommands {
 	ec["feedback"] = Feedback
 	ec["statistics"] = Statistics
 
-	// // games
-	// ec["mastermind"] = Mastermind
+	// games
+	ec["mastermind"] = Mastermind
 
 	// python-executed commands
 	ec["calculator"] = emptySlashCommandHandler
