@@ -3,17 +3,15 @@ package main
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	"os"
 	"os/signal"
-	"time"
 
 	"github.com/48thFlame/Boost-bot/commands"
 	"github.com/48thFlame/Boost-bot/discord"
 )
 
 func init() {
-	rand.Seed(time.Now().UnixNano())
+	// rand.Seed(time.Now().UnixNano())
 	log.Default().SetOutput(os.Stdout)
 }
 
