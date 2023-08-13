@@ -250,7 +250,8 @@ func Poll(s *dg.Session, i *dg.InteractionCreate) {
 	}
 }
 
-// const feedbackChannelId = "845017352264351764" in boost server
+// TODO: make in config.json!
+// const feedbackChannelId = "845017352264351764" // in boost server
 const feedbackChannelId = "991064540731031553" // 991064540731031553 BTL server
 
 func Feedback(s *dg.Session, i *dg.InteractionCreate) {
