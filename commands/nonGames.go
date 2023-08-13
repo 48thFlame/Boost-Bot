@@ -204,7 +204,10 @@ func Poll(s *dg.Session, i *dg.InteractionCreate) {
 	embed := discord.NewEmbed().
 		SetupEmbed().
 		SetAuthor("attachment://poll.png", "Poll", "").
-		AddField(fmt.Sprintf("%v's poll:", discord.GetInteractionUser(i.Interaction)), poll, false).MessageEmbed
+		AddField(
+			fmt.Sprintf("%v's poll:", discord.GetInteractionUser(i.Interaction).Username),
+			poll,
+			false).MessageEmbed
 
 	pollR, err := os.Open("./assets/poll.png")
 	if err != nil {
@@ -247,8 +250,8 @@ func Poll(s *dg.Session, i *dg.InteractionCreate) {
 	}
 }
 
-// const feedbackChannelId = "845017352264351764"
-const feedbackChannelId = "991064540731031553"
+// const feedbackChannelId = "845017352264351764" in boost server
+const feedbackChannelId = "991064540731031553" // 991064540731031553 BTL server
 
 func Feedback(s *dg.Session, i *dg.InteractionCreate) {
 	var err error

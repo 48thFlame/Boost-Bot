@@ -56,6 +56,7 @@ type Bot struct {
 }
 
 func (b *Bot) Start() error {
+	// ? how works? doesn't Start func return?
 	go func() {
 		err := b.runPyScript()
 		if err != nil {
