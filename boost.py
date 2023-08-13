@@ -38,6 +38,6 @@ async def on_ready(event) -> None:
 if __name__ == "__main__":
     bot.run(
         activity=hikari.Activity(
-            type=hikari.ActivityType.WATCHING, name="Avishai doing the magic..."
+            type=hikari.ActivityType.PLAYING, name="/mastermind"
         )
     )
