@@ -250,9 +250,7 @@ func Poll(s *dg.Session, i *dg.InteractionCreate) {
 	}
 }
 
-// TODO: make in config.json!
-// const feedbackChannelId = "845017352264351764" // in boost server
-const feedbackChannelId = "991064540731031553" // 991064540731031553 BTL server
+var FeedbackChannelId string
 
 func Feedback(s *dg.Session, i *dg.InteractionCreate) {
 	var err error
@@ -297,7 +295,7 @@ func Feedback(s *dg.Session, i *dg.InteractionCreate) {
 		SetDescription(options[0].StringValue()).MessageEmbed
 
 	_, err = s.ChannelMessageSendEmbed(
-		feedbackChannelId,
+		FeedbackChannelId,
 		embed,
 	)
 	if err != nil {

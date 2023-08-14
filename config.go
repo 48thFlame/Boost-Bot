@@ -9,6 +9,7 @@ import (
 type configType struct {
 	PyFilePath        string `json:"pyFilePath"`
 	PyInterpreterName string `json:"pyInterpreterName"`
+	FeedbackChannelId string `json:"feedbackChannelId"`
 }
 
 func loadConfig() (configType, error) {

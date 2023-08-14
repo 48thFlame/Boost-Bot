@@ -1,4 +1,8 @@
 {
     "pyFilePath": "./boost.py",
-    "pyInterpreterName": "python3"
+    "pyInterpreterName": "python3",
+    "this is": "btl server",
+    "feedbackChannelId": "991064540731031553",
+    "this is blah": "boost server for build",
+    "for build only feedbackChannelId": "991064540731031553"
 }

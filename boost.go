@@ -28,6 +28,8 @@ func run() (err error) {
 		return fmt.Errorf("error loading config: %v", err)
 	}
 
+	commands.FeedbackChannelId = config.FeedbackChannelId
+
 	bot, err := discord.NewBot("./TOKEN.txt", config.PyInterpreterName, config.PyFilePath, commands.ExportCommands())
 	if err != nil {
 		return fmt.Errorf("error creating bot: %v", err)
