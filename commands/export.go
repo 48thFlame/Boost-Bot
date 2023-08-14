@@ -24,6 +24,7 @@ func ExportCommands() exportedCommands {
 
 	// games
 	ec["mastermind"] = Mastermind
+	ec["connect4"] = Connect4
 
 	// python-executed commands
 	ec["calculator"] = emptySlashCommandHandler
