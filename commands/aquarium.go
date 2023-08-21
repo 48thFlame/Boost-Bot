@@ -9,31 +9,30 @@ import (
 	dg "github.com/bwmarrin/discordgo"
 )
 
-var fishArr = [...]string{"🐠", "🐟", "🐡"}
-var fishSpecialArr = [...]string{"🐙", "🐬", "🐋", "🦈", "🦑", "🦐", "🪼", "🧜🏻‍♀️"}
-var floorArr = [...]string{"🪸", "🌿", "🌱", "🌾"}
-var floorSpecialArr = [...]string{"🦀", "🦞", "🐚", "🏰"}
-var topArr = [...]string{"🐳", "🌊", "⛵", "🏊", "🏄", "🚣", "🚤", "🚢", "🛟", "⛴️"}
+var fishArr = [...]string{"🐠 ", "🐟 ", "🐡 "}
+var fishSpecialArr = [...]string{"🐙 ", "🐬 ", "🐋 ", "🦈 ", "🦑 ", "🦐 ", "🪼 ", "🧜🏻‍♀️ "}
+var floorArr = [...]string{"🪸 ", "🌿 ", "🌱 ", "🌾 "}
+var floorSpecialArr = [...]string{"🦀 ", "🦞 ", "🐚 ", "🏰 "}
+var topArr = [...]string{"🐳 ", "🌊 ", "⛵ ", "🏊 ", "🏄 ", "🚣 ", "🚤 ", "🚢 ", "🛟 ", "⛴️ "}
 
-var aquariumSpace = "\u3000 \u200b "
+var aquariumSpace = "\u3000\u3000"
 
-// var aquariumSpace = "\u200b \u200b \u200b"
 var bubble = "🫧"
 
 const (
-	topThingWeight = 0.15
+	topThingWeight = 0.3
 
-	floorThingWeight   = 0.75
-	floorSpecialWeight = 0.15
+	floorThingWeight   = 0.8
+	floorSpecialWeight = 0.18
 
-	levelThingWeight   = 0.18
-	levelSpecialWeight = 0.1
+	levelThingWeight   = 0.19
+	levelSpecialWeight = 0.252
+
+	bubbleWeight = 0.078
+
+	defaultAquariumWidth  int64 = 10
+	defaultAquariumHeight int64 = 7
 )
-
-// const fishArrLen = len(fishArr)
-// const specialArrLen = len(specialArr)
-// const floorArrLen = len(floorArr)
-// const topArrayLen = len(topArr)
 
 func randomWeight(weight float64) bool {
 	return rand.Float64() < weight
@@ -113,16 +112,22 @@ func genLevel(width int) string {
 	for i := 0; i < width; i++ {
 		var thing string
 
-		shouldThing := randomWeight(levelThingWeight)
-		if shouldThing {
-			special := randomWeight(levelSpecialWeight)
-			if special {
-				thing = randomItem(fishSpecialArr[:])
-			} else {
-				thing = randomItem(fishArr[:])
-			}
+		shouldBubble := randomWeight(bubbleWeight)
+
+		if shouldBubble {
+			thing = bubble
 		} else {
-			thing = aquariumSpace
+			shouldThing := randomWeight(levelThingWeight)
+			if shouldThing {
+				special := randomWeight(levelSpecialWeight)
+				if special {
+					thing = randomItem(fishSpecialArr[:])
+				} else {
+					thing = randomItem(fishArr[:])
+				}
+			} else {
+				thing = aquariumSpace
+			}
 		}
 
 		levelStr.WriteString(thing)
@@ -133,10 +138,7 @@ func genLevel(width int) string {
 	return levelStr.String()
 }
 
-const width = 14
-const height = 9
-
-func genAquarium() string {
+func genAquarium(width, height int) string {
 	var aquarium strings.Builder
 
 	aquarium.WriteString(genTop(width))
@@ -144,30 +146,6 @@ func genAquarium() string {
 		aquarium.WriteString(genLevel(width))
 	}
 	aquarium.WriteString(genFloor(width))
-
-	// aquarium.WriteString(strings.Join(top[:], ""))
-	// aquarium.WriteRune('\n')
-	// aquarium.WriteString(strings.Join(fish[:], ""))
-	// aquarium.WriteString(bubble)
-	// aquarium.WriteRune('\n')
-	// aquarium.WriteString(strings.Join(special[:], ""))
-	// aquarium.WriteRune('\n')
-
-	// aquarium.WriteString(strings.Join(floor[:], ""))
-	// aquarium.WriteRune('\n')
-
-	// for rowI := 0; rowI < aquariumHeight; rowI++ {
-	// 	for colI := 0; colI < aquariumWidth; colI++ {
-	// 		r := rand.Intn(20)
-	// 		// r := 0
-	// 		if r == 0 {
-	// 			aquarium.WriteString(fish[rand.Intn(len(fish))])
-	// 		} else {
-	// 			aquarium.WriteString(aquariumSpace)
-	// 		}
-	// 	}
-	// 	aquarium.WriteString("\n")
-	// }
 
 	return aquarium.String()
 }
@@ -190,13 +168,37 @@ func Aquarium(s *dg.Session, i *dg.InteractionCreate) {
 	// 	discord.Error(fmt.Errorf("error opening boost.png: %v", err), s, i.Interaction)
 	// 	return
 	// }
+	options := i.ApplicationCommandData().Options
+	optionsLen := len(options)
+	width := defaultAquariumWidth
+	height := defaultAquariumHeight
+
+	if optionsLen >= 2 {
+		width = options[0].IntValue()
+		height = options[1].IntValue()
+	} else if optionsLen == 1 {
+		firstOpt := options[0]
+		switch firstOpt.Name {
+		case "width":
+			width = firstOpt.IntValue()
+		case "height":
+			height = firstOpt.IntValue()
+		default:
+			discord.Error(
+				fmt.Errorf(
+					"unrecognized options in aquarium command, its not width nor height but instead: %v",
+					firstOpt.Name),
+				s, i.Interaction)
+			return
+		}
+	}
 
 	err := discord.InteractionRespond(
 		s,
 		i.Interaction,
 		dg.InteractionResponseChannelMessageWithSource,
 		&dg.InteractionResponseData{
-			Content: genAquarium(),
+			Content: genAquarium(int(width), int(height)),
 			// Embeds: []*dg.MessageEmbed{embed.MessageEmbed},
 			// Files:  []*dg.File{{Name: "aquarium.png", Reader: aquariumR}, {Name: "boost.png", Reader: boostR}},
 		},
