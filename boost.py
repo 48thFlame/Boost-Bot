@@ -20,12 +20,12 @@ bot = lightbulb.BotApp(
 
 @bot.listen(hikari.StartingEvent)
 async def load_commands(event):
-    # bot.purge_application_commands(755001834418208840, global_commands=True)
+    # await bot.purge_application_commands(755001834418208840, global_commands=True)
     # return
+    load_aquarium_command(bot)
     loadNonGamesCommands(bot)
     load_calculator(bot)
     load_mastermind_commands(bot)
-    load_aquarium_command(bot)
     load_help_command(bot)
     load_dm_control(bot)
 
@@ -40,6 +40,6 @@ async def on_ready(event) -> None:
 if __name__ == "__main__":
     bot.run(
         activity=hikari.Activity(
-            type=hikari.ActivityType.PLAYING, name="/mastermind"
+            type=hikari.ActivityType.WATCHING, name="fish in /aquarium"
         )
     )
